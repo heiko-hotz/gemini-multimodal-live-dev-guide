@@ -1,0 +1,2991 @@
+openapi: 3.0.1
+info:
+  title: Line
+  description: APIs relating to Line and similar services
+  version: '1.0'
+servers:
+  - url: https://api.tfl.gov.uk/Line
+paths:
+  /Meta/Modes:
+    get:
+      tags:
+        - Line
+      summary: Gets a list of valid modes
+      description: Gets a list of valid modes
+      operationId: Line_MetaModes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaModesGet200ApplicationJsonResponse'
+              example:
+                - isTflService: true
+                  isFarePaying: true
+                  isScheduledService: true
+                  modeName: string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/MetaModesGet200TextJsonResponse'
+              example:
+                - isTflService: true
+                  isFarePaying: true
+                  isScheduledService: true
+                  modeName: string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/MetaModesGet200ApplicationXmlResponse'
+              example: <MetaModesGet200ApplicationXmlResponse> <isTflService>true</isTflService> <isFarePaying>true</isFarePaying> <isScheduledService>true</isScheduledService> <modeName>string</modeName> </MetaModesGet200ApplicationXmlResponse>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/MetaModesGet200TextXmlResponse'
+              example: <MetaModesGet200TextXmlResponse> <isTflService>true</isTflService> <isFarePaying>true</isFarePaying> <isScheduledService>true</isScheduledService> <modeName>string</modeName> </MetaModesGet200TextXmlResponse>
+  /Meta/Severity:
+    get:
+      tags:
+        - Line
+      summary: Gets a list of valid severity codes
+      description: Gets a list of valid severity codes
+      operationId: Line_MetaSeverity
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaSeverityGet200ApplicationJsonResponse'
+              example:
+                - modeName: string
+                  severityLevel: 0
+                  description: string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/MetaSeverityGet200TextJsonResponse'
+              example:
+                - modeName: string
+                  severityLevel: 0
+                  description: string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/MetaSeverityGet200ApplicationXmlResponse'
+              example: <MetaSeverityGet200ApplicationXmlResponse> <modeName>string</modeName> <severityLevel>0</severityLevel> <description>string</description> </MetaSeverityGet200ApplicationXmlResponse>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/MetaSeverityGet200TextXmlResponse'
+              example: <MetaSeverityGet200TextXmlResponse> <modeName>string</modeName> <severityLevel>0</severityLevel> <description>string</description> </MetaSeverityGet200TextXmlResponse>
+  /Meta/DisruptionCategories:
+    get:
+      tags:
+        - Line
+      summary: Gets a list of valid disruption categories
+      description: Gets a list of valid disruption categories
+      operationId: Line_MetaDisruptionCategories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaDisruptionCategoriesGet200ApplicationJsonResponse'
+              example:
+                - string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/MetaDisruptionCategoriesGet200TextJsonResponse'
+              example:
+                - string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/MetaDisruptionCategoriesGet200ApplicationXmlResponse'
+              example: <MetaDisruptionCategoriesGet200ApplicationXmlResponse>string</MetaDisruptionCategoriesGet200ApplicationXmlResponse>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/MetaDisruptionCategoriesGet200TextXmlResponse'
+              example: <MetaDisruptionCategoriesGet200TextXmlResponse>string</MetaDisruptionCategoriesGet200TextXmlResponse>
+  /Meta/ServiceTypes:
+    get:
+      tags:
+        - Line
+      summary: Gets a list of valid ServiceTypes to filter on
+      description: Gets a list of valid ServiceTypes to filter on
+      operationId: Line_MetaServiceTypes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaServiceTypesGet200ApplicationJsonResponse'
+              example:
+                - string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/MetaServiceTypesGet200TextJsonResponse'
+              example:
+                - string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/MetaServiceTypesGet200ApplicationXmlResponse'
+              example: <MetaServiceTypesGet200ApplicationXmlResponse>string</MetaServiceTypesGet200ApplicationXmlResponse>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/MetaServiceTypesGet200TextXmlResponse'
+              example: <MetaServiceTypesGet200TextXmlResponse>string</MetaServiceTypesGet200TextXmlResponse>
+  '/{ids}':
+    get:
+      tags:
+        - Line
+      summary: Gets lines that match the specified line ids.
+      description: Gets lines that match the specified line ids.
+      operationId: Line_GetByPathIds
+      parameters:
+        - name: ids
+          in: path
+          description: 'A comma-separated list of line ids e.g. victoria,circle,N133. Max. approx. 20 ids.'
+          required: true
+          schema:
+            type: string
+          example: victoria
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ids-Get200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ids-Get200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ids-Get200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ids-Get200TextXmlResponse'
+  '/Mode/{modes}':
+    get:
+      tags:
+        - Line
+      summary: Gets lines that serve the given modes.
+      description: Gets lines that serve the given modes.
+      operationId: Line_GetByModeByPathModes
+      parameters:
+        - name: modes
+          in: path
+          description: 'A comma-separated list of modes e.g. tube,dlr'
+          required: true
+          schema:
+            type: string
+          example: tube
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-Get200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-Get200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-Get200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-Get200TextXmlResponse'
+  /Route:
+    get:
+      tags:
+        - Line
+      summary: 'Get all valid routes for all lines, including the name and id of the originating and terminating stops for each route.'
+      description: 'Get all valid routes for all lines, including the name and id of the originating and terminating stops for each route.'
+      operationId: Line_RouteByQueryServiceTypes
+      parameters:
+        - name: serviceTypes
+          in: query
+          description: 'A comma seperated list of service types to filter on. Supported values: Regular, Night. Defaulted to ''Regular'' if not specified'
+          schema:
+            enum:
+              - Regular
+              - Night
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteGet200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RouteGet200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RouteGet200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/RouteGet200TextXmlResponse'
+  '/{ids}/Route':
+    get:
+      tags:
+        - Line
+      summary: 'Get all valid routes for given line ids, including the name and id of the originating and terminating stops for each route.'
+      description: 'Get all valid routes for given line ids, including the name and id of the originating and terminating stops for each route.'
+      operationId: Line_LineRoutesByIdsByPathIdsQueryServiceTypes
+      parameters:
+        - name: ids
+          in: path
+          description: 'A comma-separated list of line ids e.g. victoria,circle,N133. Max. approx. 20 ids.'
+          required: true
+          schema:
+            type: string
+          example: victoria
+        - name: serviceTypes
+          in: query
+          description: 'A comma seperated list of service types to filter on. Supported values: Regular, Night. Defaulted to ''Regular'' if not specified'
+          schema:
+            enum:
+              - Regular
+              - Night
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ids-RouteGet200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ids-RouteGet200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ids-RouteGet200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ids-RouteGet200TextXmlResponse'
+  '/Mode/{modes}/Route':
+    get:
+      tags:
+        - Line
+      summary: 'Gets all lines and their valid routes for given modes, including the name and id of the originating and terminating stops for each route'
+      description: 'Gets all lines and their valid routes for given modes, including the name and id of the originating and terminating stops for each route'
+      operationId: Line_RouteByModeByPathModesQueryServiceTypes
+      parameters:
+        - name: modes
+          in: path
+          description: 'A comma-separated list of modes e.g. tube,dlr'
+          required: true
+          schema:
+            type: string
+          example: tube
+        - name: serviceTypes
+          in: query
+          description: 'A comma seperated list of service types to filter on. Supported values: Regular, Night. Defaulted to ''Regular'' if not specified'
+          schema:
+            enum:
+              - Regular
+              - Night
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-RouteGet200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-RouteGet200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-RouteGet200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-RouteGet200TextXmlResponse'
+  '/{id}/Route/Sequence/{direction}':
+    get:
+      tags:
+        - Line
+      summary: 'Gets all valid routes for given line id, including the sequence of stops on each route.'
+      description: 'Gets all valid routes for given line id, including the sequence of stops on each route.'
+      operationId: Line_RouteSequenceByPathIdPathDirectionQueryServiceTypesQueryExcludeCrowding
+      parameters:
+        - name: id
+          in: path
+          description: A single line id e.g. victoria
+          required: true
+          schema:
+            type: string
+          example: victoria
+        - name: direction
+          in: path
+          description: The direction of travel. Can be inbound or outbound.
+          required: true
+          schema:
+            enum:
+              - inbound
+              - outbound
+              - all
+            type: string
+          example: inbound
+        - name: serviceTypes
+          in: query
+          description: 'A comma seperated list of service types to filter on. Supported values: Regular, Night. Defaulted to ''Regular'' if not specified'
+          schema:
+            enum:
+              - Regular
+              - Night
+            type: string
+        - name: excludeCrowding
+          in: query
+          description: That excludes crowding from line disruptions. Can be true or false.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tfl-23'
+              example:
+                lineId: string
+                lineName: string
+                direction: string
+                isOutboundOnly: true
+                mode: string
+                lineStrings:
+                  - string
+                stations:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                stopPointSequences:
+                  - lineId: string
+                    lineName: string
+                    direction: string
+                    branchId: 0
+                    nextBranchIds:
+                      - 0
+                    prevBranchIds:
+                      - 0
+                    stopPoint:
+                      - routeId: 0
+                        parentId: string
+                        stationId: string
+                        icsId: string
+                        topMostParentId: string
+                        direction: string
+                        towards: string
+                        modes:
+                          - string
+                        stopType: string
+                        stopLetter: string
+                        zone: string
+                        accessibilitySummary: string
+                        hasDisruption: true
+                        lines:
+                          - id: string
+                            name: string
+                            uri: string
+                            fullName: string
+                            type: string
+                            crowding:
+                              passengerFlows:
+                                - timeSlice: string
+                                  value: 0
+                              trainLoadings:
+                                - line: string
+                                  lineDirection: string
+                                  platformDirection: string
+                                  direction: string
+                                  naptanTo: string
+                                  timeSlice: string
+                                  value: 0
+                            routeType: Unknown
+                            status: Unknown
+                        status: true
+                        id: string
+                        url: string
+                        name: string
+                        lat: 0
+                        lon: 0
+                    serviceType: Regular
+                orderedLineRoutes:
+                  - name: string
+                    naptanIds:
+                      - string
+                    serviceType: string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Tfl-23'
+              example:
+                lineId: string
+                lineName: string
+                direction: string
+                isOutboundOnly: true
+                mode: string
+                lineStrings:
+                  - string
+                stations:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                stopPointSequences:
+                  - lineId: string
+                    lineName: string
+                    direction: string
+                    branchId: 0
+                    nextBranchIds:
+                      - 0
+                    prevBranchIds:
+                      - 0
+                    stopPoint:
+                      - routeId: 0
+                        parentId: string
+                        stationId: string
+                        icsId: string
+                        topMostParentId: string
+                        direction: string
+                        towards: string
+                        modes:
+                          - string
+                        stopType: string
+                        stopLetter: string
+                        zone: string
+                        accessibilitySummary: string
+                        hasDisruption: true
+                        lines:
+                          - id: string
+                            name: string
+                            uri: string
+                            fullName: string
+                            type: string
+                            crowding:
+                              passengerFlows:
+                                - timeSlice: string
+                                  value: 0
+                              trainLoadings:
+                                - line: string
+                                  lineDirection: string
+                                  platformDirection: string
+                                  direction: string
+                                  naptanTo: string
+                                  timeSlice: string
+                                  value: 0
+                            routeType: Unknown
+                            status: Unknown
+                        status: true
+                        id: string
+                        url: string
+                        name: string
+                        lat: 0
+                        lon: 0
+                    serviceType: Regular
+                orderedLineRoutes:
+                  - name: string
+                    naptanIds:
+                      - string
+                    serviceType: string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Tfl-23'
+              example: <Tfl-23> <lineId>string</lineId> <lineName>string</lineName> <direction>string</direction> <isOutboundOnly>true</isOutboundOnly> <mode>string</mode> <lineStrings>string</lineStrings> <stations> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stations> <stopPointSequences> <lineId>string</lineId> <lineName>string</lineName> <direction>string</direction> <branchId>0</branchId> <nextBranchIds>0</nextBranchIds> <prevBranchIds>0</prevBranchIds> <stopPoint> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stopPoint> <serviceType>Regular</serviceType> </stopPointSequences> <orderedLineRoutes> <name>string</name> <naptanIds>string</naptanIds> <serviceType>string</serviceType> </orderedLineRoutes> </Tfl-23>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Tfl-23'
+              example: <Tfl-23> <lineId>string</lineId> <lineName>string</lineName> <direction>string</direction> <isOutboundOnly>true</isOutboundOnly> <mode>string</mode> <lineStrings>string</lineStrings> <stations> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stations> <stopPointSequences> <lineId>string</lineId> <lineName>string</lineName> <direction>string</direction> <branchId>0</branchId> <nextBranchIds>0</nextBranchIds> <prevBranchIds>0</prevBranchIds> <stopPoint> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stopPoint> <serviceType>Regular</serviceType> </stopPointSequences> <orderedLineRoutes> <name>string</name> <naptanIds>string</naptanIds> <serviceType>string</serviceType> </orderedLineRoutes> </Tfl-23>
+  '/{ids}/Status/{startDate}/to/{endDate}':
+    get:
+      tags:
+        - Line
+      summary: Gets the line status for given line ids during the provided dates e.g Minor Delays
+      description: Gets the line status for given line ids during the provided dates e.g Minor Delays
+      operationId: Line_StatusByPathIdsPathStartDatePathEndDateQueryDetail
+      parameters:
+        - name: ids
+          in: path
+          description: 'A comma-separated list of line ids e.g. victoria,circle,N133. Max. approx. 20 ids.'
+          required: true
+          schema:
+            type: string
+          example: victoria
+        - name: startDate
+          in: path
+          description: Format - date-time (as date-time in RFC3339). Start date for start of the period
+          required: true
+          schema:
+            type: string
+          example: '2024-03-01'
+        - name: endDate
+          in: path
+          description: Format - date-time (as date-time in RFC3339). End date for the period that the disruption will fall within to be included in the results
+          required: true
+          schema:
+            type: string
+          example: '2024-03-31'
+        - name: detail
+          in: query
+          description: Include details of the disruptions that are causing the line status including the affected stops and routes
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ids-Status-startDate-To-endDate-Get200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ids-Status-startDate-To-endDate-Get200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ids-Status-startDate-To-endDate-Get200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ids-Status-startDate-To-endDate-Get200TextXmlResponse'
+  '/{ids}/Status':
+    get:
+      tags:
+        - Line
+      summary: Gets the line status of for given line ids e.g Minor Delays
+      description: Gets the line status of for given line ids e.g Minor Delays
+      operationId: Line_StatusByIdsByPathIdsQueryDetail
+      parameters:
+        - name: ids
+          in: path
+          description: 'A comma-separated list of line ids e.g. victoria,circle,N133. Max. approx. 20 ids.'
+          required: true
+          schema:
+            type: string
+          example: victoria
+        - name: detail
+          in: query
+          description: Include details of the disruptions that are causing the line status including the affected stops and routes
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ids-StatusGet200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ids-StatusGet200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ids-StatusGet200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ids-StatusGet200TextXmlResponse'
+  '/Search/{query}':
+    get:
+      tags:
+        - Line
+      summary: Search for lines or routes matching the query string
+      description: Search for lines or routes matching the query string
+      operationId: Line_SearchByPathQueryQueryModesQueryServiceTypes
+      parameters:
+        - name: query
+          in: path
+          description: Search term e.g victoria
+          required: true
+          schema:
+            type: string
+          example: victoria
+        - name: modes
+          in: query
+          description: Optionally filter by the specified modes
+          schema:
+            type: array
+        - name: serviceTypes
+          in: query
+          description: 'A comma seperated list of service types to filter on. Supported values: Regular, Night. Defaulted to ''Regular'' if not specified'
+          schema:
+            enum:
+              - Regular
+              - Night
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tfl-27'
+              example:
+                input: string
+                searchMatches:
+                  - lineId: string
+                    mode: string
+                    lineName: string
+                    lineRouteSection:
+                      - routeId: 0
+                        direction: string
+                        destination: string
+                        fromStation: string
+                        toStation: string
+                        serviceType: string
+                        vehicleDestinationText: string
+                    matchedRouteSections:
+                      - id: 0
+                    matchedStops:
+                      - routeId: 0
+                        parentId: string
+                        stationId: string
+                        icsId: string
+                        topMostParentId: string
+                        direction: string
+                        towards: string
+                        modes:
+                          - string
+                        stopType: string
+                        stopLetter: string
+                        zone: string
+                        accessibilitySummary: string
+                        hasDisruption: true
+                        lines:
+                          - id: string
+                            name: string
+                            uri: string
+                            fullName: string
+                            type: string
+                            crowding:
+                              passengerFlows:
+                                - timeSlice: string
+                                  value: 0
+                              trainLoadings:
+                                - line: string
+                                  lineDirection: string
+                                  platformDirection: string
+                                  direction: string
+                                  naptanTo: string
+                                  timeSlice: string
+                                  value: 0
+                            routeType: Unknown
+                            status: Unknown
+                        status: true
+                        id: string
+                        url: string
+                        name: string
+                        lat: 0
+                        lon: 0
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Tfl-27'
+              example:
+                input: string
+                searchMatches:
+                  - lineId: string
+                    mode: string
+                    lineName: string
+                    lineRouteSection:
+                      - routeId: 0
+                        direction: string
+                        destination: string
+                        fromStation: string
+                        toStation: string
+                        serviceType: string
+                        vehicleDestinationText: string
+                    matchedRouteSections:
+                      - id: 0
+                    matchedStops:
+                      - routeId: 0
+                        parentId: string
+                        stationId: string
+                        icsId: string
+                        topMostParentId: string
+                        direction: string
+                        towards: string
+                        modes:
+                          - string
+                        stopType: string
+                        stopLetter: string
+                        zone: string
+                        accessibilitySummary: string
+                        hasDisruption: true
+                        lines:
+                          - id: string
+                            name: string
+                            uri: string
+                            fullName: string
+                            type: string
+                            crowding:
+                              passengerFlows:
+                                - timeSlice: string
+                                  value: 0
+                              trainLoadings:
+                                - line: string
+                                  lineDirection: string
+                                  platformDirection: string
+                                  direction: string
+                                  naptanTo: string
+                                  timeSlice: string
+                                  value: 0
+                            routeType: Unknown
+                            status: Unknown
+                        status: true
+                        id: string
+                        url: string
+                        name: string
+                        lat: 0
+                        lon: 0
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Tfl-27'
+              example: <Tfl-27> <input>string</input> <searchMatches> <lineId>string</lineId> <mode>string</mode> <lineName>string</lineName> <lineRouteSection> <routeId>0</routeId> <direction>string</direction> <destination>string</destination> <fromStation>string</fromStation> <toStation>string</toStation> <serviceType>string</serviceType> <vehicleDestinationText>string</vehicleDestinationText> </lineRouteSection> <matchedRouteSections> <id>0</id> </matchedRouteSections> <matchedStops> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </matchedStops> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </searchMatches> </Tfl-27>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Tfl-27'
+              example: <Tfl-27> <input>string</input> <searchMatches> <lineId>string</lineId> <mode>string</mode> <lineName>string</lineName> <lineRouteSection> <routeId>0</routeId> <direction>string</direction> <destination>string</destination> <fromStation>string</fromStation> <toStation>string</toStation> <serviceType>string</serviceType> <vehicleDestinationText>string</vehicleDestinationText> </lineRouteSection> <matchedRouteSections> <id>0</id> </matchedRouteSections> <matchedStops> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </matchedStops> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </searchMatches> </Tfl-27>
+  '/Status/{severity}':
+    get:
+      tags:
+        - Line
+      summary: Gets the line status for all lines with a given severity A list of valid severity codes can be obtained from a call to Line/Meta/Severity
+      description: Gets the line status for all lines with a given severity A list of valid severity codes can be obtained from a call to Line/Meta/Severity
+      operationId: Line_StatusBySeverityByPathSeverity
+      parameters:
+        - name: severity
+          in: path
+          description: 'Format - int32. The level of severity (eg: a number from 0 to 14)'
+          required: true
+          schema:
+            type: integer
+          example: 2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status-severity-Get200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Status-severity-Get200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status-severity-Get200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Status-severity-Get200TextXmlResponse'
+  '/Mode/{modes}/Status':
+    get:
+      tags:
+        - Line
+      summary: Gets the line status of for all lines for the given modes
+      description: Gets the line status of for all lines for the given modes
+      operationId: Line_StatusByModeByPathModesQueryDetailQuerySeverityLevel
+      parameters:
+        - name: modes
+          in: path
+          description: 'A comma-separated list of modes to filter by. e.g. tube,dlr'
+          required: true
+          schema:
+            type: string
+          example: tube
+        - name: detail
+          in: query
+          description: Include details of the disruptions that are causing the line status including the affected stops and routes
+          schema:
+            type: boolean
+        - name: severityLevel
+          in: query
+          description: 'If specified, ensures that only those line status(es) are returned within the lines that have disruptions with the matching severity level.'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-StatusGet200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-StatusGet200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-StatusGet200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-StatusGet200TextXmlResponse'
+  '/{id}/StopPoints':
+    get:
+      tags:
+        - Line
+      summary: Gets a list of the stations that serve the given line id
+      description: Gets a list of the stations that serve the given line id
+      operationId: Line_StopPointsByPathIdQueryTflOperatedNationalRailStationsOnly
+      parameters:
+        - name: id
+          in: path
+          description: A single line id e.g. victoria
+          required: true
+          schema:
+            type: string
+          example: victoria
+        - name: tflOperatedNationalRailStationsOnly
+          in: query
+          description: 'If the national-rail line is requested, this flag will filter the national rail stations so that only those operated by TfL are returned'
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/id-StopPointsGet200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/id-StopPointsGet200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/id-StopPointsGet200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/id-StopPointsGet200TextXmlResponse'
+  '/{id}/Timetable/{fromStopPointId}':
+    get:
+      tags:
+        - Line
+      summary: Gets the timetable for a specified station on the give line
+      description: Gets the timetable for a specified station on the give line
+      operationId: Line_TimetableByPathFromStopPointIdPathId
+      parameters:
+        - name: fromStopPointId
+          in: path
+          description: 'The originating station''s stop point id (station naptan code e.g. 940GZZLUASL, you can use /StopPoint/Search/{query} endpoint to find a stop point id from a station name)'
+          required: true
+          schema:
+            type: string
+          example: 940GZZLUVIC
+        - name: id
+          in: path
+          description: A single line id e.g. victoria
+          required: true
+          schema:
+            type: string
+          example: victoria
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tfl-39'
+              example:
+                lineId: string
+                lineName: string
+                direction: string
+                pdfUrl: string
+                stations:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                stops:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                timetable:
+                  departureStopId: string
+                  routes:
+                    - stationIntervals:
+                        - id: string
+                          intervals:
+                            - stopId: string
+                              timeToArrival: 0
+                      schedules:
+                        - name: string
+                          knownJourneys:
+                            - hour: string
+                              minute: string
+                              intervalId: 0
+                          firstJourney:
+                            hour: string
+                            minute: string
+                            intervalId: 0
+                          lastJourney:
+                            hour: string
+                            minute: string
+                            intervalId: 0
+                          periods:
+                            - type: Normal
+                              fromTime:
+                                hour: string
+                                minute: string
+                              toTime:
+                                hour: string
+                                minute: string
+                              frequency:
+                                lowestFrequency: 0
+                                highestFrequency: 0
+                disambiguation:
+                  disambiguationOptions:
+                    - description: string
+                      uri: string
+                statusErrorMessage: string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Tfl-39'
+              example:
+                lineId: string
+                lineName: string
+                direction: string
+                pdfUrl: string
+                stations:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                stops:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                timetable:
+                  departureStopId: string
+                  routes:
+                    - stationIntervals:
+                        - id: string
+                          intervals:
+                            - stopId: string
+                              timeToArrival: 0
+                      schedules:
+                        - name: string
+                          knownJourneys:
+                            - hour: string
+                              minute: string
+                              intervalId: 0
+                          firstJourney:
+                            hour: string
+                            minute: string
+                            intervalId: 0
+                          lastJourney:
+                            hour: string
+                            minute: string
+                            intervalId: 0
+                          periods:
+                            - type: Normal
+                              fromTime:
+                                hour: string
+                                minute: string
+                              toTime:
+                                hour: string
+                                minute: string
+                              frequency:
+                                lowestFrequency: 0
+                                highestFrequency: 0
+                disambiguation:
+                  disambiguationOptions:
+                    - description: string
+                      uri: string
+                statusErrorMessage: string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Tfl-39'
+              example: <Tfl-39> <lineId>string</lineId> <lineName>string</lineName> <direction>string</direction> <pdfUrl>string</pdfUrl> <stations> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stations> <stops> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stops> <timetable> <departureStopId>string</departureStopId> <routes> <stationIntervals> <id>string</id> <intervals> <stopId>string</stopId> <timeToArrival>0</timeToArrival> </intervals> </stationIntervals> <schedules> <name>string</name> <knownJourneys> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </knownJourneys> <firstJourney> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </firstJourney> <lastJourney> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </lastJourney> <periods> <type>Normal</type> <fromTime> <hour>string</hour> <minute>string</minute> </fromTime> <toTime> <hour>string</hour> <minute>string</minute> </toTime> <frequency> <lowestFrequency>0</lowestFrequency> <highestFrequency>0</highestFrequency> </frequency> </periods> </schedules> </routes> </timetable> <disambiguation> <disambiguationOptions> <description>string</description> <uri>string</uri> </disambiguationOptions> </disambiguation> <statusErrorMessage>string</statusErrorMessage> </Tfl-39>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Tfl-39'
+              example: <Tfl-39> <lineId>string</lineId> <lineName>string</lineName> <direction>string</direction> <pdfUrl>string</pdfUrl> <stations> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stations> <stops> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stops> <timetable> <departureStopId>string</departureStopId> <routes> <stationIntervals> <id>string</id> <intervals> <stopId>string</stopId> <timeToArrival>0</timeToArrival> </intervals> </stationIntervals> <schedules> <name>string</name> <knownJourneys> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </knownJourneys> <firstJourney> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </firstJourney> <lastJourney> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </lastJourney> <periods> <type>Normal</type> <fromTime> <hour>string</hour> <minute>string</minute> </fromTime> <toTime> <hour>string</hour> <minute>string</minute> </toTime> <frequency> <lowestFrequency>0</lowestFrequency> <highestFrequency>0</highestFrequency> </frequency> </periods> </schedules> </routes> </timetable> <disambiguation> <disambiguationOptions> <description>string</description> <uri>string</uri> </disambiguationOptions> </disambiguation> <statusErrorMessage>string</statusErrorMessage> </Tfl-39>
+  '/{id}/Timetable/{fromStopPointId}/to/{toStopPointId}':
+    get:
+      tags:
+        - Line
+      summary: Gets the timetable for a specified station on the give line with specified destination
+      description: Gets the timetable for a specified station on the give line with specified destination
+      operationId: Line_TimetableToByPathFromStopPointIdPathIdPathToStopPointId
+      parameters:
+        - name: fromStopPointId
+          in: path
+          description: 'The originating station''s stop point id (station naptan code e.g. 940GZZLUASL, you can use /StopPoint/Search/{query} endpoint to find a stop point id from a station name)'
+          required: true
+          schema:
+            type: string
+          example: 940GZZLUVIC
+        - name: id
+          in: path
+          description: A single line id e.g. victoria
+          required: true
+          schema:
+            type: string
+          example: victoria
+        - name: toStopPointId
+          in: path
+          description: The destination stations's Naptan code
+          required: true
+          schema:
+            type: string
+          example: 940GZZLUGPK
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tfl-39'
+              example:
+                lineId: string
+                lineName: string
+                direction: string
+                pdfUrl: string
+                stations:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                stops:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                timetable:
+                  departureStopId: string
+                  routes:
+                    - stationIntervals:
+                        - id: string
+                          intervals:
+                            - stopId: string
+                              timeToArrival: 0
+                      schedules:
+                        - name: string
+                          knownJourneys:
+                            - hour: string
+                              minute: string
+                              intervalId: 0
+                          firstJourney:
+                            hour: string
+                            minute: string
+                            intervalId: 0
+                          lastJourney:
+                            hour: string
+                            minute: string
+                            intervalId: 0
+                          periods:
+                            - type: Normal
+                              fromTime:
+                                hour: string
+                                minute: string
+                              toTime:
+                                hour: string
+                                minute: string
+                              frequency:
+                                lowestFrequency: 0
+                                highestFrequency: 0
+                disambiguation:
+                  disambiguationOptions:
+                    - description: string
+                      uri: string
+                statusErrorMessage: string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Tfl-39'
+              example:
+                lineId: string
+                lineName: string
+                direction: string
+                pdfUrl: string
+                stations:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                stops:
+                  - routeId: 0
+                    parentId: string
+                    stationId: string
+                    icsId: string
+                    topMostParentId: string
+                    direction: string
+                    towards: string
+                    modes:
+                      - string
+                    stopType: string
+                    stopLetter: string
+                    zone: string
+                    accessibilitySummary: string
+                    hasDisruption: true
+                    lines:
+                      - id: string
+                        name: string
+                        uri: string
+                        fullName: string
+                        type: string
+                        crowding:
+                          passengerFlows:
+                            - timeSlice: string
+                              value: 0
+                          trainLoadings:
+                            - line: string
+                              lineDirection: string
+                              platformDirection: string
+                              direction: string
+                              naptanTo: string
+                              timeSlice: string
+                              value: 0
+                        routeType: Unknown
+                        status: Unknown
+                    status: true
+                    id: string
+                    url: string
+                    name: string
+                    lat: 0
+                    lon: 0
+                timetable:
+                  departureStopId: string
+                  routes:
+                    - stationIntervals:
+                        - id: string
+                          intervals:
+                            - stopId: string
+                              timeToArrival: 0
+                      schedules:
+                        - name: string
+                          knownJourneys:
+                            - hour: string
+                              minute: string
+                              intervalId: 0
+                          firstJourney:
+                            hour: string
+                            minute: string
+                            intervalId: 0
+                          lastJourney:
+                            hour: string
+                            minute: string
+                            intervalId: 0
+                          periods:
+                            - type: Normal
+                              fromTime:
+                                hour: string
+                                minute: string
+                              toTime:
+                                hour: string
+                                minute: string
+                              frequency:
+                                lowestFrequency: 0
+                                highestFrequency: 0
+                disambiguation:
+                  disambiguationOptions:
+                    - description: string
+                      uri: string
+                statusErrorMessage: string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Tfl-39'
+              example: <Tfl-39> <lineId>string</lineId> <lineName>string</lineName> <direction>string</direction> <pdfUrl>string</pdfUrl> <stations> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stations> <stops> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stops> <timetable> <departureStopId>string</departureStopId> <routes> <stationIntervals> <id>string</id> <intervals> <stopId>string</stopId> <timeToArrival>0</timeToArrival> </intervals> </stationIntervals> <schedules> <name>string</name> <knownJourneys> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </knownJourneys> <firstJourney> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </firstJourney> <lastJourney> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </lastJourney> <periods> <type>Normal</type> <fromTime> <hour>string</hour> <minute>string</minute> </fromTime> <toTime> <hour>string</hour> <minute>string</minute> </toTime> <frequency> <lowestFrequency>0</lowestFrequency> <highestFrequency>0</highestFrequency> </frequency> </periods> </schedules> </routes> </timetable> <disambiguation> <disambiguationOptions> <description>string</description> <uri>string</uri> </disambiguationOptions> </disambiguation> <statusErrorMessage>string</statusErrorMessage> </Tfl-39>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Tfl-39'
+              example: <Tfl-39> <lineId>string</lineId> <lineName>string</lineName> <direction>string</direction> <pdfUrl>string</pdfUrl> <stations> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stations> <stops> <routeId>0</routeId> <parentId>string</parentId> <stationId>string</stationId> <icsId>string</icsId> <topMostParentId>string</topMostParentId> <direction>string</direction> <towards>string</towards> <modes>string</modes> <stopType>string</stopType> <stopLetter>string</stopLetter> <zone>string</zone> <accessibilitySummary>string</accessibilitySummary> <hasDisruption>true</hasDisruption> <lines> <id>string</id> <name>string</name> <uri>string</uri> <fullName>string</fullName> <type>string</type> <crowding> <passengerFlows> <timeSlice>string</timeSlice> <value>0</value> </passengerFlows> <trainLoadings> <line>string</line> <lineDirection>string</lineDirection> <platformDirection>string</platformDirection> <direction>string</direction> <naptanTo>string</naptanTo> <timeSlice>string</timeSlice> <value>0</value> </trainLoadings> </crowding> <routeType>Unknown</routeType> <status>Unknown</status> </lines> <status>true</status> <id>string</id> <url>string</url> <name>string</name> <lat>0</lat> <lon>0</lon> </stops> <timetable> <departureStopId>string</departureStopId> <routes> <stationIntervals> <id>string</id> <intervals> <stopId>string</stopId> <timeToArrival>0</timeToArrival> </intervals> </stationIntervals> <schedules> <name>string</name> <knownJourneys> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </knownJourneys> <firstJourney> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </firstJourney> <lastJourney> <hour>string</hour> <minute>string</minute> <intervalId>0</intervalId> </lastJourney> <periods> <type>Normal</type> <fromTime> <hour>string</hour> <minute>string</minute> </fromTime> <toTime> <hour>string</hour> <minute>string</minute> </toTime> <frequency> <lowestFrequency>0</lowestFrequency> <highestFrequency>0</highestFrequency> </frequency> </periods> </schedules> </routes> </timetable> <disambiguation> <disambiguationOptions> <description>string</description> <uri>string</uri> </disambiguationOptions> </disambiguation> <statusErrorMessage>string</statusErrorMessage> </Tfl-39>
+  '/{ids}/Disruption':
+    get:
+      tags:
+        - Line
+      summary: Get disruptions for the given line ids
+      description: Get disruptions for the given line ids
+      operationId: Line_DisruptionByPathIds
+      parameters:
+        - name: ids
+          in: path
+          description: 'A comma-separated list of line ids e.g. victoria,circle,N133. Max. approx. 20 ids.'
+          required: true
+          schema:
+            type: string
+          example: victoria
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ids-DisruptionGet200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ids-DisruptionGet200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ids-DisruptionGet200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ids-DisruptionGet200TextXmlResponse'
+  '/Mode/{modes}/Disruption':
+    get:
+      tags:
+        - Line
+      summary: Get disruptions for all lines of the given modes.
+      description: Get disruptions for all lines of the given modes.
+      operationId: Line_DisruptionByModeByPathModes
+      parameters:
+        - name: modes
+          in: path
+          description: 'A comma-separated list of modes e.g. tube,dlr'
+          required: true
+          schema:
+            type: string
+          example: tube
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-DisruptionGet200ApplicationJsonResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-DisruptionGet200TextJsonResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-DisruptionGet200ApplicationXmlResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Mode-modes-DisruptionGet200TextXmlResponse'
+  '/{ids}/Arrivals/{stopPointId}':
+    get:
+      tags:
+        - Line
+      summary: Get the list of arrival predictions for given line ids based at the given stop
+      description: Get the list of arrival predictions for given line ids based at the given stop
+      operationId: Line_ArrivalsWithStopPointByPathIdsPathStopPointIdQueryDirectionQueryDestina
+      parameters:
+        - name: ids
+          in: path
+          description: 'A comma-separated list of line ids e.g. victoria,circle,N133. Max. approx. 20 ids.'
+          required: true
+          schema:
+            type: string
+          example: victoria
+        - name: stopPointId
+          in: path
+          description: 'Optional. Id of stop to get arrival predictions for (station naptan code e.g. 940GZZLUASL, you can use /StopPoint/Search/{query} endpoint to find a stop point id from a station name)'
+          required: true
+          schema:
+            type: string
+          example: 940GZZLUVIC
+        - name: direction
+          in: query
+          description: 'Optional. The direction of travel. Can be inbound or outbound or all. If left blank, and destinationStopId is set, will default to all'
+          schema:
+            enum:
+              - inbound
+              - outbound
+              - all
+            type: string
+        - name: destinationStationId
+          in: query
+          description: Optional. Id of destination stop
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ids-Arrivals-stopPointId-Get200ApplicationJsonResponse'
+              example:
+                - id: string
+                  operationType: 0
+                  vehicleId: string
+                  naptanId: string
+                  stationName: string
+                  lineId: string
+                  lineName: string
+                  platformName: string
+                  direction: string
+                  bearing: string
+                  destinationNaptanId: string
+                  destinationName: string
+                  timestamp: string
+                  timeToStation: 0
+                  currentLocation: string
+                  towards: string
+                  expectedArrival: string
+                  timeToLive: string
+                  modeName: string
+                  timing:
+                    countdownServerAdjustment: string
+                    source: string
+                    insert: string
+                    read: string
+                    sent: string
+                    received: string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ids-Arrivals-stopPointId-Get200TextJsonResponse'
+              example:
+                - id: string
+                  operationType: 0
+                  vehicleId: string
+                  naptanId: string
+                  stationName: string
+                  lineId: string
+                  lineName: string
+                  platformName: string
+                  direction: string
+                  bearing: string
+                  destinationNaptanId: string
+                  destinationName: string
+                  timestamp: string
+                  timeToStation: 0
+                  currentLocation: string
+                  towards: string
+                  expectedArrival: string
+                  timeToLive: string
+                  modeName: string
+                  timing:
+                    countdownServerAdjustment: string
+                    source: string
+                    insert: string
+                    read: string
+                    sent: string
+                    received: string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ids-Arrivals-stopPointId-Get200ApplicationXmlResponse'
+              example: <ids-Arrivals-stopPointId-Get200ApplicationXmlResponse> <id>string</id> <operationType>0</operationType> <vehicleId>string</vehicleId> <naptanId>string</naptanId> <stationName>string</stationName> <lineId>string</lineId> <lineName>string</lineName> <platformName>string</platformName> <direction>string</direction> <bearing>string</bearing> <destinationNaptanId>string</destinationNaptanId> <destinationName>string</destinationName> <timestamp>string</timestamp> <timeToStation>0</timeToStation> <currentLocation>string</currentLocation> <towards>string</towards> <expectedArrival>string</expectedArrival> <timeToLive>string</timeToLive> <modeName>string</modeName> <timing> <countdownServerAdjustment>string</countdownServerAdjustment> <source>string</source> <insert>string</insert> <read>string</read> <sent>string</sent> <received>string</received> </timing> </ids-Arrivals-stopPointId-Get200ApplicationXmlResponse>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ids-Arrivals-stopPointId-Get200TextXmlResponse'
+              example: <ids-Arrivals-stopPointId-Get200TextXmlResponse> <id>string</id> <operationType>0</operationType> <vehicleId>string</vehicleId> <naptanId>string</naptanId> <stationName>string</stationName> <lineId>string</lineId> <lineName>string</lineName> <platformName>string</platformName> <direction>string</direction> <bearing>string</bearing> <destinationNaptanId>string</destinationNaptanId> <destinationName>string</destinationName> <timestamp>string</timestamp> <timeToStation>0</timeToStation> <currentLocation>string</currentLocation> <towards>string</towards> <expectedArrival>string</expectedArrival> <timeToLive>string</timeToLive> <modeName>string</modeName> <timing> <countdownServerAdjustment>string</countdownServerAdjustment> <source>string</source> <insert>string</insert> <read>string</read> <sent>string</sent> <received>string</received> </timing> </ids-Arrivals-stopPointId-Get200TextXmlResponse>
+  '/{ids}/Arrivals':
+    get:
+      tags:
+        - Line
+      summary: Get the list of arrival predictions for given line ids based at the given stop
+      description: Get the list of arrival predictions for given line ids based at the given stop
+      operationId: Line_ArrivalsByPathIds
+      parameters:
+        - name: ids
+          in: path
+          description: 'A comma-separated list of line ids e.g. victoria,circle,N133. Max. approx. 20 ids.'
+          required: true
+          schema:
+            type: string
+          example: victoria
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ids-ArrivalsGet200ApplicationJsonResponse'
+              example:
+                - id: string
+                  operationType: 0
+                  vehicleId: string
+                  naptanId: string
+                  stationName: string
+                  lineId: string
+                  lineName: string
+                  platformName: string
+                  direction: string
+                  bearing: string
+                  destinationNaptanId: string
+                  destinationName: string
+                  timestamp: string
+                  timeToStation: 0
+                  currentLocation: string
+                  towards: string
+                  expectedArrival: string
+                  timeToLive: string
+                  modeName: string
+                  timing:
+                    countdownServerAdjustment: string
+                    source: string
+                    insert: string
+                    read: string
+                    sent: string
+                    received: string
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ids-ArrivalsGet200TextJsonResponse'
+              example:
+                - id: string
+                  operationType: 0
+                  vehicleId: string
+                  naptanId: string
+                  stationName: string
+                  lineId: string
+                  lineName: string
+                  platformName: string
+                  direction: string
+                  bearing: string
+                  destinationNaptanId: string
+                  destinationName: string
+                  timestamp: string
+                  timeToStation: 0
+                  currentLocation: string
+                  towards: string
+                  expectedArrival: string
+                  timeToLive: string
+                  modeName: string
+                  timing:
+                    countdownServerAdjustment: string
+                    source: string
+                    insert: string
+                    read: string
+                    sent: string
+                    received: string
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ids-ArrivalsGet200ApplicationXmlResponse'
+              example: <ids-ArrivalsGet200ApplicationXmlResponse> <id>string</id> <operationType>0</operationType> <vehicleId>string</vehicleId> <naptanId>string</naptanId> <stationName>string</stationName> <lineId>string</lineId> <lineName>string</lineName> <platformName>string</platformName> <direction>string</direction> <bearing>string</bearing> <destinationNaptanId>string</destinationNaptanId> <destinationName>string</destinationName> <timestamp>string</timestamp> <timeToStation>0</timeToStation> <currentLocation>string</currentLocation> <towards>string</towards> <expectedArrival>string</expectedArrival> <timeToLive>string</timeToLive> <modeName>string</modeName> <timing> <countdownServerAdjustment>string</countdownServerAdjustment> <source>string</source> <insert>string</insert> <read>string</read> <sent>string</sent> <received>string</received> </timing> </ids-ArrivalsGet200ApplicationXmlResponse>
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ids-ArrivalsGet200TextXmlResponse'
+              example: <ids-ArrivalsGet200TextXmlResponse> <id>string</id> <operationType>0</operationType> <vehicleId>string</vehicleId> <naptanId>string</naptanId> <stationName>string</stationName> <lineId>string</lineId> <lineName>string</lineName> <platformName>string</platformName> <direction>string</direction> <bearing>string</bearing> <destinationNaptanId>string</destinationNaptanId> <destinationName>string</destinationName> <timestamp>string</timestamp> <timeToStation>0</timeToStation> <currentLocation>string</currentLocation> <towards>string</towards> <expectedArrival>string</expectedArrival> <timeToLive>string</timeToLive> <modeName>string</modeName> <timing> <countdownServerAdjustment>string</countdownServerAdjustment> <source>string</source> <insert>string</insert> <read>string</read> <sent>string</sent> <received>string</received> </timing> </ids-ArrivalsGet200TextXmlResponse>
+  /*:
+    get:
+      tags:
+        - StopPoint
+      summary: Forwards any remaining requests to the back-end
+      description: Forwards any remaining requests to the back-end
+      operationId: Forward_Proxy
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get200ApplicationJsonResponse'
+components:
+  schemas:
+    Tfl:
+      type: object
+      properties:
+        isTflService:
+          type: boolean
+        isFarePaying:
+          type: boolean
+        isScheduledService:
+          type: boolean
+        modeName:
+          type: string
+    Tfl-2:
+      type: object
+      properties:
+        modeName:
+          type: string
+        severityLevel:
+          type: integer
+          format: int32
+        description:
+          type: string
+    Tfl-3:
+      type: object
+      properties:
+        timeSlice:
+          type: string
+          description: 'Time in 24hr format with 15 minute intervals e.g. 0500-0515, 0515-0530 etc.'
+        value:
+          type: integer
+          description: Count of passenger flow towards a platform
+          format: int32
+    Tfl-4:
+      type: object
+      properties:
+        line:
+          type: string
+          description: The Line Name e.g. "Victoria"
+        lineDirection:
+          type: string
+          description: 'Direction of the Line e.g. NB, SB, WB etc.'
+        platformDirection:
+          type: string
+          description: 'Direction displayed on the platform e.g. NB, SB, WB etc.'
+        direction:
+          type: string
+          description: Direction in regards to Journey Planner i.e. inbound or outbound
+        naptanTo:
+          type: string
+          description: Naptan of the adjacent station
+        timeSlice:
+          type: string
+          description: 'Time in 24hr format with 15 minute intervals e.g. 0500-0515, 0515-0530 etc.'
+        value:
+          type: integer
+          description: "Scale between 1-6, \r\n             1 = Very quiet, 2 = Quiet, 3 = Fairly busy, 4 = Busy, 5 = Very busy, 6 = Exceptionally busy"
+          format: int32
+    Tfl-5:
+      type: object
+      properties:
+        passengerFlows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-3'
+          description: Busiest times at a station (static information)
+        trainLoadings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-4'
+          description: 'Train Loading on a scale 1-6, 1 being "Very quiet" and 6 being "Exceptionally busy" (static information)'
+    Tfl-6:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        uri:
+          type: string
+        fullName:
+          type: string
+        type:
+          type: string
+        crowding:
+          $ref: '#/components/schemas/Tfl-5'
+        routeType:
+          enum:
+            - Unknown
+            - All
+            - Cycle Superhighways
+            - Quietways
+            - Cycleways
+            - Mini-Hollands
+            - Central London Grid
+            - Streetspace Route
+          type: string
+        status:
+          enum:
+            - Unknown
+            - All
+            - Open
+            - In Progress
+            - Planned
+            - Planned - Subject to feasibility and consultation.
+            - Not Open
+          type: string
+    Tfl-7:
+      type: object
+      properties:
+        naptanIdReference:
+          type: string
+        stationAtcoCode:
+          type: string
+        lineIdentifier:
+          type: array
+          items:
+            type: string
+    Tfl-8:
+      type: object
+      properties:
+        modeName:
+          type: string
+        lineIdentifier:
+          type: array
+          items:
+            type: string
+    Tfl-9:
+      type: object
+      properties:
+        category:
+          type: string
+        key:
+          type: string
+        sourceSystemKey:
+          type: string
+        value:
+          type: string
+        modified:
+          type: string
+          format: date-time
+    Tfl-10:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier.
+        url:
+          type: string
+          description: The unique location of this resource.
+        commonName:
+          type: string
+          description: A human readable name.
+        distance:
+          type: number
+          description: "The distance of the place from its search point, if this is the result\r\n            of a geographical search, otherwise zero."
+          format: double
+        placeType:
+          type: string
+          description: The type of Place. See /Place/Meta/placeTypes for possible values.
+        additionalProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-9'
+          description: A bag of additional key/value pairs with extra information about this place.
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-10'
+        childrenUrls:
+          type: array
+          items:
+            type: string
+        lat:
+          type: number
+          description: WGS84 latitude of the location.
+          format: double
+        lon:
+          type: number
+          description: WGS84 longitude of the location.
+          format: double
+    Tfl-11:
+      type: object
+      properties:
+        naptanId:
+          type: string
+        platformName:
+          type: string
+        indicator:
+          type: string
+          description: The indicator of the stop point e.g. "Stop K"
+        stopLetter:
+          type: string
+          description: 'The stop letter, if it could be cleansed from the Indicator e.g. "K"'
+        modes:
+          type: array
+          items:
+            type: string
+        icsCode:
+          type: string
+        smsCode:
+          type: string
+        stopType:
+          type: string
+        stationNaptan:
+          type: string
+        accessibilitySummary:
+          type: string
+        hubNaptanCode:
+          type: string
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-6'
+        lineGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-7'
+        lineModeGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-8'
+        fullName:
+          type: string
+        naptanMode:
+          type: string
+        status:
+          type: boolean
+        id:
+          type: string
+          description: A unique identifier.
+        url:
+          type: string
+          description: The unique location of this resource.
+        commonName:
+          type: string
+          description: A human readable name.
+        distance:
+          type: number
+          description: "The distance of the place from its search point, if this is the result\r\n            of a geographical search, otherwise zero."
+          format: double
+        placeType:
+          type: string
+          description: The type of Place. See /Place/Meta/placeTypes for possible values.
+        additionalProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-9'
+          description: A bag of additional key/value pairs with extra information about this place.
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-10'
+        childrenUrls:
+          type: array
+          items:
+            type: string
+        lat:
+          type: number
+          description: WGS84 latitude of the location.
+          format: double
+        lon:
+          type: number
+          description: WGS84 longitude of the location.
+          format: double
+    Tfl-12:
+      type: object
+      properties:
+        ordinal:
+          type: integer
+          format: int32
+        stopPoint:
+          $ref: '#/components/schemas/Tfl-11'
+    Tfl-13:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Id of the route
+        lineId:
+          type: string
+          description: The Id of the Line
+        routeCode:
+          type: string
+          description: The route code
+        name:
+          type: string
+          description: Name such as "72"
+        lineString:
+          type: string
+          description: The co-ordinates of the route's path as a geoJSON lineString
+        direction:
+          type: string
+          description: Inbound or Outbound
+        originationName:
+          type: string
+          description: The name of the Origin StopPoint
+        destinationName:
+          type: string
+          description: The name of the Destination StopPoint
+        validTo:
+          type: string
+          description: The DateTime that the Service containing this Route is valid until.
+          format: date-time
+        validFrom:
+          type: string
+          description: The DateTime that the Service containing this Route is valid from.
+          format: date-time
+        routeSectionNaptanEntrySequence:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-12'
+    Tfl-14:
+      type: object
+      properties:
+        category:
+          enum:
+            - Undefined
+            - RealTime
+            - PlannedWork
+            - Information
+            - Event
+            - Crowding
+            - StatusAlert
+          type: string
+          description: Gets or sets the category of this dispruption.
+        type:
+          type: string
+          description: Gets or sets the disruption type of this dispruption.
+        categoryDescription:
+          type: string
+          description: Gets or sets the description of the category.
+        description:
+          type: string
+          description: Gets or sets the description of this disruption.
+        summary:
+          type: string
+          description: Gets or sets the summary of this disruption.
+        additionalInfo:
+          type: string
+          description: Gets or sets the additionaInfo of this disruption.
+        created:
+          type: string
+          description: Gets or sets the date/time when this disruption was created.
+          format: date-time
+        lastUpdate:
+          type: string
+          description: Gets or sets the date/time when this disruption was last updated.
+          format: date-time
+        affectedRoutes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-13'
+          description: Gets or sets the routes affected by this disruption
+        affectedStops:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-11'
+          description: Gets or sets the stops affected by this disruption
+        closureText:
+          type: string
+          description: Text describing the closure type
+      description: Represents a disruption to a route within the transport network.
+    Tfl-15:
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: Gets or sets the start date.
+          format: date-time
+        toDate:
+          type: string
+          description: Gets or sets the end date.
+          format: date-time
+        isNow:
+          type: boolean
+          description: If true is a realtime status rather than planned or info
+      description: Represents a period for which a planned works is valid.
+    Tfl-16:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        lineId:
+          type: string
+        statusSeverity:
+          type: integer
+          format: int32
+        statusSeverityDescription:
+          type: string
+        reason:
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        validityPeriods:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-15'
+        disruption:
+          $ref: '#/components/schemas/Tfl-14'
+    Tfl-17:
+      type: object
+      properties:
+        routeCode:
+          type: string
+          description: The route code
+        name:
+          type: string
+          description: Name such as "72"
+        direction:
+          type: string
+          description: Inbound or Outbound
+        originationName:
+          type: string
+          description: The name of the Origin StopPoint
+        destinationName:
+          type: string
+          description: The name of the Destination StopPoint
+        originator:
+          type: string
+          description: The Id (NaPTAN code) of the Origin StopPoint
+        destination:
+          type: string
+          description: The Id (NaPTAN code) or the Destination StopPoint
+        serviceType:
+          type: string
+          description: Regular or Night
+        validTo:
+          type: string
+          description: The DateTime that the Service containing this Route is valid until.
+          format: date-time
+        validFrom:
+          type: string
+          description: The DateTime that the Service containing this Route is valid from.
+          format: date-time
+      description: Description of a Route used in Route search results.
+    Tfl-18:
+      type: object
+      properties:
+        name:
+          type: string
+        uri:
+          type: string
+    Tfl-19:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        modeName:
+          type: string
+        disruptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-14'
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        lineStatuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-16'
+        routeSections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-17'
+        serviceTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-18'
+        crowding:
+          $ref: '#/components/schemas/Tfl-5'
+    Tfl-20:
+      type: object
+      properties:
+        routeId:
+          type: integer
+          format: int32
+        parentId:
+          type: string
+        stationId:
+          type: string
+        icsId:
+          type: string
+        topMostParentId:
+          type: string
+        direction:
+          type: string
+        towards:
+          type: string
+        modes:
+          type: array
+          items:
+            type: string
+        stopType:
+          type: string
+        stopLetter:
+          type: string
+        zone:
+          type: string
+        accessibilitySummary:
+          type: string
+        hasDisruption:
+          type: boolean
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-6'
+        status:
+          type: boolean
+        id:
+          type: string
+        url:
+          type: string
+        name:
+          type: string
+        lat:
+          type: number
+          format: double
+        lon:
+          type: number
+          format: double
+    Tfl-21:
+      type: object
+      properties:
+        lineId:
+          type: string
+        lineName:
+          type: string
+        direction:
+          type: string
+        branchId:
+          type: integer
+          description: The id of this branch.
+          format: int32
+        nextBranchIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: "The ids of the next branch(es) in the sequence. Note that the next and previous branch id can be\r\n            identical in the case of a looped route e.g. the Circle line."
+        prevBranchIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: "The ids of the previous branch(es) in the sequence. Note that the next and previous branch id can be\r\n            identical in the case of a looped route e.g. the Circle line."
+        stopPoint:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-20'
+        serviceType:
+          enum:
+            - Regular
+            - Night
+          type: string
+    Tfl-22:
+      type: object
+      properties:
+        name:
+          type: string
+        naptanIds:
+          type: array
+          items:
+            type: string
+        serviceType:
+          type: string
+    Tfl-23:
+      type: object
+      properties:
+        lineId:
+          type: string
+        lineName:
+          type: string
+        direction:
+          type: string
+        isOutboundOnly:
+          type: boolean
+        mode:
+          type: string
+        lineStrings:
+          type: array
+          items:
+            type: string
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-20'
+        stopPointSequences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-21'
+        orderedLineRoutes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-22'
+    Tfl-24:
+      type: object
+      properties:
+        routeId:
+          type: integer
+          format: int32
+        direction:
+          type: string
+        destination:
+          type: string
+        fromStation:
+          type: string
+        toStation:
+          type: string
+        serviceType:
+          type: string
+        vehicleDestinationText:
+          type: string
+    Tfl-25:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+    Tfl-26:
+      type: object
+      properties:
+        lineId:
+          type: string
+        mode:
+          type: string
+        lineName:
+          type: string
+        lineRouteSection:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-24'
+        matchedRouteSections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-25'
+        matchedStops:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-20'
+        id:
+          type: string
+        url:
+          type: string
+        name:
+          type: string
+        lat:
+          type: number
+          format: double
+        lon:
+          type: number
+          format: double
+    Tfl-27:
+      type: object
+      properties:
+        input:
+          type: string
+        searchMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-26'
+    Tfl-28:
+      type: object
+      properties:
+        stopId:
+          type: string
+        timeToArrival:
+          type: number
+          format: double
+    Tfl-29:
+      type: object
+      properties:
+        id:
+          type: string
+        intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-28'
+    Tfl-30:
+      type: object
+      properties:
+        hour:
+          type: string
+        minute:
+          type: string
+        intervalId:
+          type: integer
+          format: int32
+    Tfl-31:
+      type: object
+      properties:
+        hour:
+          type: string
+        minute:
+          type: string
+    Tfl-32:
+      type: object
+      properties:
+        lowestFrequency:
+          type: number
+          format: double
+        highestFrequency:
+          type: number
+          format: double
+    Tfl-33:
+      type: object
+      properties:
+        type:
+          enum:
+            - Normal
+            - FrequencyHours
+            - FrequencyMinutes
+            - Unknown
+          type: string
+        fromTime:
+          $ref: '#/components/schemas/Tfl-31'
+        toTime:
+          $ref: '#/components/schemas/Tfl-31'
+        frequency:
+          $ref: '#/components/schemas/Tfl-32'
+    Tfl-34:
+      type: object
+      properties:
+        name:
+          type: string
+        knownJourneys:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-30'
+        firstJourney:
+          $ref: '#/components/schemas/Tfl-30'
+        lastJourney:
+          $ref: '#/components/schemas/Tfl-30'
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-33'
+    Tfl-35:
+      type: object
+      properties:
+        stationIntervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-29'
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-34'
+    Tfl-36:
+      type: object
+      properties:
+        departureStopId:
+          type: string
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-35'
+    Tfl-37:
+      type: object
+      properties:
+        description:
+          type: string
+        uri:
+          type: string
+    Tfl-38:
+      type: object
+      properties:
+        disambiguationOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-37'
+    Tfl-39:
+      type: object
+      properties:
+        lineId:
+          type: string
+        lineName:
+          type: string
+        direction:
+          type: string
+        pdfUrl:
+          type: string
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-20'
+        stops:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tfl-20'
+        timetable:
+          $ref: '#/components/schemas/Tfl-36'
+        disambiguation:
+          $ref: '#/components/schemas/Tfl-38'
+        statusErrorMessage:
+          type: string
+    Tfl-40:
+      type: object
+      properties:
+        countdownServerAdjustment:
+          type: string
+        source:
+          type: string
+          format: date-time
+        insert:
+          type: string
+          format: date-time
+        read:
+          type: string
+          format: date-time
+        sent:
+          type: string
+          format: date-time
+        received:
+          type: string
+          format: date-time
+    Tfl-41:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identitier for the prediction
+        operationType:
+          type: integer
+          description: 'The type of the operation (1: is new or has been updated, 2: should be deleted from any client cache)'
+          format: int32
+        vehicleId:
+          type: string
+          description: 'The actual vehicle in transit (for train modes, the leading car of the rolling set)'
+        naptanId:
+          type: string
+          description: Identifier for the prediction
+        stationName:
+          type: string
+          description: Station name
+        lineId:
+          type: string
+          description: Unique identifier for the Line
+        lineName:
+          type: string
+          description: Line Name
+        platformName:
+          type: string
+          description: 'Platform name (for bus, this is the stop letter)'
+        direction:
+          type: string
+          description: Direction (unified to inbound/outbound)
+        bearing:
+          type: string
+          description: Bearing (between 0 to 359)
+        destinationNaptanId:
+          type: string
+          description: Naptan Identifier for the prediction's destination
+        destinationName:
+          type: string
+          description: Name of the destination
+        timestamp:
+          type: string
+          description: Timestamp for when the prediction was inserted/modified (source column drives what objects are broadcast on each iteration)
+          format: date-time
+        timeToStation:
+          type: integer
+          description: Prediction of the Time to station in seconds
+          format: int32
+        currentLocation:
+          type: string
+          description: The current location of the vehicle.
+        towards:
+          type: string
+          description: Routing information or other descriptive text about the path of the vehicle towards the destination
+        expectedArrival:
+          type: string
+          description: The expected arrival time of the vehicle at the stop/station
+          format: date-time
+        timeToLive:
+          type: string
+          description: The expiry time for the prediction
+          format: date-time
+        modeName:
+          type: string
+          description: The mode name of the station/line the prediction relates to
+        timing:
+          $ref: '#/components/schemas/Tfl-40'
+      description: DTO to capture the prediction details
+    MetaModesGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl'
+    MetaModesGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl'
+    MetaModesGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl'
+    MetaModesGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl'
+    Get200ApplicationJsonResponse:
+      type: object
+    MetaSeverityGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-2'
+    MetaSeverityGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-2'
+    MetaSeverityGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-2'
+    MetaSeverityGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-2'
+    MetaDisruptionCategoriesGet200ApplicationJsonResponse:
+      type: array
+      items:
+        type: string
+    MetaDisruptionCategoriesGet200TextJsonResponse:
+      type: array
+      items:
+        type: string
+    MetaDisruptionCategoriesGet200ApplicationXmlResponse:
+      type: array
+      items:
+        type: string
+    MetaDisruptionCategoriesGet200TextXmlResponse:
+      type: array
+      items:
+        type: string
+    MetaServiceTypesGet200ApplicationJsonResponse:
+      type: array
+      items:
+        type: string
+    MetaServiceTypesGet200TextJsonResponse:
+      type: array
+      items:
+        type: string
+    MetaServiceTypesGet200ApplicationXmlResponse:
+      type: array
+      items:
+        type: string
+    MetaServiceTypesGet200TextXmlResponse:
+      type: array
+      items:
+        type: string
+    ids-Get200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-Get200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-Get200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-Get200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-Get200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-Get200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-Get200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-Get200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    RouteGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    RouteGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    RouteGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    RouteGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-RouteGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-RouteGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-RouteGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-RouteGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-RouteGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-RouteGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-RouteGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-RouteGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-Status-startDate-To-endDate-Get200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-Status-startDate-To-endDate-Get200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-Status-startDate-To-endDate-Get200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-Status-startDate-To-endDate-Get200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-StatusGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-StatusGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-StatusGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    ids-StatusGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Status-severity-Get200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Status-severity-Get200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Status-severity-Get200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Status-severity-Get200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-StatusGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-StatusGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-StatusGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    Mode-modes-StatusGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-19'
+    id-StopPointsGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-11'
+    id-StopPointsGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-11'
+    id-StopPointsGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-11'
+    id-StopPointsGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-11'
+    ids-DisruptionGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-14'
+    ids-DisruptionGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-14'
+    ids-DisruptionGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-14'
+    ids-DisruptionGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-14'
+    Mode-modes-DisruptionGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-14'
+    Mode-modes-DisruptionGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-14'
+    Mode-modes-DisruptionGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-14'
+    Mode-modes-DisruptionGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-14'
+    ids-Arrivals-stopPointId-Get200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-41'
+    ids-Arrivals-stopPointId-Get200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-41'
+    ids-Arrivals-stopPointId-Get200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-41'
+    ids-Arrivals-stopPointId-Get200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-41'
+    ids-ArrivalsGet200ApplicationJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-41'
+    ids-ArrivalsGet200TextJsonResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-41'
+    ids-ArrivalsGet200ApplicationXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-41'
+    ids-ArrivalsGet200TextXmlResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tfl-41'
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: app_key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: app_key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]
