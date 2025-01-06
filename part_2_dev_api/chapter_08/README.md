@@ -2,7 +2,12 @@
 
 This chapter transforms our multimodal chat application into **Project Pastra** - a mobile-friendly web application deployed on Cloud Run. Inspired by Google DeepMind's Project Astra (a research prototype exploring future capabilities of universal AI assistants), our application demonstrates how to create a production-ready, mobile-first AI assistant experience.
 
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run/?git_repo=https://github.com/GoogleCloudPlatform/generative-ai/tree/main/part_2_dev_api/chapter_08)
+[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run/?git_repo=https://github.com/heiko-hotz/gemini-multimodal-live-dev-guide&ref=feat-cloudrun-deploy-button&dir=part_2_dev_api/chapter_08)
+
+## Environment Variables Required
+- `OPENWEATHER_API_KEY`: Your OpenWeather API key for weather functionality
+- `FINNHUB_API_KEY`: Your Finnhub API key for stock information
+- `GEMINI_API_KEY`: Your Google AI Studio API key for Gemini access
 
 ## New Features
 
