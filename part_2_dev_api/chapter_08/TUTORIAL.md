@@ -41,9 +41,7 @@ gcloud config set project $PROJECT_ID
 Enable the necessary Google Cloud APIs:
 
 ```bash
-gcloud services enable \
-  cloudbuild.googleapis.com \
-  run.googleapis.com
+gcloud services enable cloudbuild.googleapis.com run.googleapis.com
 ```
 
 ## Build and Deploy
@@ -54,16 +52,12 @@ Now let's build and deploy the application:
 # Build the container
 gcloud builds submit --tag gcr.io/$PROJECT_ID/project-pastra-dev-api
 
-# Prepare environment variables
+# Set up environment variables
 ENV_VARS="GEMINI_API_KEY=$GEMINI_API_KEY"
-if [ ! -z "$OPENWEATHER_API_KEY" ]; then
-  ENV_VARS="$ENV_VARS,OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY"
-fi
-if [ ! -z "$FINNHUB_API_KEY" ]; then
-  ENV_VARS="$ENV_VARS,FINNHUB_API_KEY=$FINNHUB_API_KEY"
-fi
+[ ! -z "$OPENWEATHER_API_KEY" ] && ENV_VARS="$ENV_VARS,OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY"
+[ ! -z "$FINNHUB_API_KEY" ] && ENV_VARS="$ENV_VARS,FINNHUB_API_KEY=$FINNHUB_API_KEY"
 
-# Deploy to Cloud Run with your API keys
+# Deploy to Cloud Run
 gcloud run deploy project-pastra-dev-api \
   --image gcr.io/$PROJECT_ID/project-pastra-dev-api \
   --platform managed \
