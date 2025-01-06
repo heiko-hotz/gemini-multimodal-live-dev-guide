@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const FINNHUB_API_KEY = '<YOUR_FINNHUB_API_KEY>';
+const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY || '<YOUR_FINNHUB_API_KEY>';
 
 export async function getStockPrice(symbol) {
   try {

@@ -1,0 +1,16 @@
+{
+    "prompts": [
+        {
+            "name": "_GEMINI_API_KEY",
+            "description": "Your Google AI Studio API key for Gemini access"
+        },
+        {
+            "name": "_OPENWEATHER_API_KEY", 
+            "description": "Your OpenWeather API key for weather functionality"
+        },
+        {
+            "name": "_FINNHUB_API_KEY",
+            "description": "Your Finnhub API key for stock information"
+        }
+    ]
+} 

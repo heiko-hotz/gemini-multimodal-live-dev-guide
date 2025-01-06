@@ -1,0 +1,36 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/project-pastra-v2', '.']
+
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/project-pastra-v2']
+
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'project-pastra-v2'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/project-pastra-v2'
+      - '--region'
+      - '${_REGION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'GEMINI_API_KEY=${_GEMINI_API_KEY},OPENWEATHER_API_KEY=${_OPENWEATHER_API_KEY},FINNHUB_API_KEY=${_FINNHUB_API_KEY}'
+
+substitutions:
+  _REGION: us-central1
+  _GEMINI_API_KEY: "PLACEHOLDER"
+  _OPENWEATHER_API_KEY: "PLACEHOLDER" 
+  _FINNHUB_API_KEY: "PLACEHOLDER"
+
+options:
+  dynamic_substitutions: true
+
+# Add a .cloudrun.config.json file to specify which variables to prompt for 

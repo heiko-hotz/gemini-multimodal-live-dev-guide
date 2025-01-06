@@ -66,7 +66,7 @@
     import { statusHandler } from './status-handler.js';
 
     console.log('Script started, setting up WebSocket...');
-    const apiKey = '<YOUR_API_KEY>';
+    const apiKey = process.env.GEMINI_API_KEY || '<YOUR_API_KEY>';
     const host = 'generativelanguage.googleapis.com';
     const endpoint = `wss://${host}/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${apiKey}`;
 
