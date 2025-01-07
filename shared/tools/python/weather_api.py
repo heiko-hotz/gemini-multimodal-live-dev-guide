@@ -1,9 +1,15 @@
 import requests
 import os
+from dotenv import load_dotenv
+
+# Load .env file from current directory
+load_dotenv()
 
 def get_weather(city):
     try:
-        api_key = 'e14b87ac388205f109905abdf90655af'  # OpenWeather API key
+        api_key = os.getenv('OPENWEATHER_API_KEY')
+        if not api_key:
+            raise Exception("OpenWeather API key not found in .env file")
         
         # First get coordinates for the city
         geo_url = f"https://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={api_key}"

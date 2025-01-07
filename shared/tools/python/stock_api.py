@@ -1,9 +1,16 @@
 import requests
 import os
+from dotenv import load_dotenv
+
+# Load .env file from current directory
+load_dotenv()
 
 def get_stock_price(symbol):
     try:
-        api_key = 'ctonf09r01qhpppilm1gctonf09r01qhpppilm20'  # Finnhub API key
+        api_key = os.getenv('FINNHUB_API_KEY')
+        if not api_key:
+            raise Exception("Finnhub API key not found in .env file")
+            
         url = f"https://finnhub.io/api/v1/quote?symbol={symbol}&token={api_key}"
         
         response = requests.get(url)
