@@ -14,6 +14,11 @@
 """ Pastra Tutorial Web Server"""
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import os
+import json
+import traceback
+from shared.tools.python.calendar_api import get_next_appointment
+from shared.tools.python.weather_api import get_weather
+from shared.tools.python.stock_api import get_stock_price
 
 class CORSRequestHandler(SimpleHTTPRequestHandler):
     def end_headers(self):
@@ -29,6 +34,48 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
     def list_directory(self, path):
         # Enable directory listing
         return super().list_directory(path)
+
+    def do_GET(self):
+        try:
+            if self.path.startswith('/calendar/next'):
+                self.handle_api_request(get_next_appointment)
+            elif self.path.startswith('/weather'):
+                city = self.path.split('/')[-1]
+                self.handle_api_request(lambda: get_weather(city))
+            elif self.path.startswith('/stock'):
+                symbol = self.path.split('/')[-1]
+                self.handle_api_request(lambda: get_stock_price(symbol))
+            else:
+                super().do_GET()
+        except Exception as e:
+            self.send_error_response(e)
+
+    def handle_api_request(self, handler_func):
+        try:
+            result = handler_func()
+            self.send_json_response(result)
+        except Exception as e:
+            self.send_error_response(e)
+
+    def send_json_response(self, data):
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode())
+
+    def send_error_response(self, error):
+        print(f"Error in request: {str(error)}")
+        print("Full error details:")
+        traceback.print_exc()
+        self.send_response(500)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        error_response = {
+            'error': str(error),
+            'type': type(error).__name__,
+            'traceback': traceback.format_exc()
+        }
+        self.wfile.write(json.dumps(error_response).encode())
 
 if __name__ == '__main__':
     # Change to the directory containing this script

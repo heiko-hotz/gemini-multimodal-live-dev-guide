@@ -169,6 +169,22 @@ class GeminiLiveAPI {
     this.sendMessage(toolResponse);
   }
 
+  sendTextMessage(text) {
+    const message = {
+      client_content: {
+        turns: [{
+          role: "user",
+          parts: [{
+            text: text
+          }]
+        }],
+        turn_complete: true
+      }
+    };
+    console.log('Sending text message:', message);
+    this.sendMessage(message);
+  }
+
   async ensureConnected() {
     if (this.ws.readyState === WebSocket.OPEN) {
       return;

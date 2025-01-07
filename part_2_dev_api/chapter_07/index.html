@@ -38,6 +38,12 @@
     <button id="screenButton" onclick="toggleScreen()" class="action-button">
       <span class="material-symbols-outlined">present_to_all</span>
     </button>
+    <div class="text-input-container">
+      <input type="text" id="textInput" placeholder="Type your message..." class="text-input">
+      <button id="sendButton" onclick="sendTextMessage()" class="action-button">
+        <span class="material-symbols-outlined">send</span>
+      </button>
+    </div>
   </div>
   <div class="video-container">
     <video id="videoPreview" autoplay playsinline class="hidden"></video>
@@ -57,9 +63,10 @@
     import { MediaHandler } from 'http://localhost:8000/shared/media-handler.js';
     import { getWeather } from 'http://localhost:8000/shared/tools/weather-api.js';
     import { getStockPrice } from 'http://localhost:8000/shared/tools/stock-api.js';
+    import { getNextAppointment } from 'http://localhost:8000/shared/tools/calendar-api.js';
 
     const output = document.getElementById('output');
-    const apiKey = '<YOUR_API_KEY>'; // Replace with your actual API key
+    const apiKey = 'AIzaSyAadRPpaV8Jn4kM_ZyS_b0LueFCWFEApR8'; // Replace with your actual API key
     const host = 'generativelanguage.googleapis.com';
     const endpoint = `wss://${host}/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${apiKey}`;
 
@@ -126,6 +133,20 @@
                   }
                 },
                 required: ["symbol"]
+              }
+            },
+            {
+              name: "get_next_appointment",
+              description: "Get the next calendar appointment from your Google Calendar",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  dummy: {
+                    type: "STRING",
+                    description: "This parameter is not used"
+                  }
+                },
+                required: []
               }
             }]
           },
@@ -241,8 +262,10 @@
       };
 
       geminiAPI.onAudioData = async (audioData) => {
-        if (!audioStreamer.isPlaying) {
+        // Only show "Speaking..." message for the first audio chunk
+        if (!geminiAPI.isSpeaking) {
           logMessage('Gemini: Speaking...');
+          geminiAPI.isSpeaking = true;
         }
         await playAudioChunk(audioData);
       };
@@ -256,6 +279,7 @@
       geminiAPI.onTurnComplete = () => {
         logMessage('Gemini: Finished speaking');
         isInterrupted = false;  // Reset interruption state
+        geminiAPI.isSpeaking = false;  // Reset speaking state
         audioStreamer.complete();
       };
 
@@ -333,6 +357,44 @@
                 }
               }
             });
+          } else if (call.name === 'get_next_appointment') {
+            // Show the function call details
+            logMessage(`Function: ${call.name}`);
+            
+            try {
+              const appointment = await getNextAppointment();
+              console.log('Calendar response:', appointment);
+
+              // Show the API response
+              if (appointment.message) {
+                logMessage(`API Response: ${appointment.message}`);
+              } else {
+                logMessage('API Response:');
+                logMessage(`Event: ${appointment.summary}`);
+                logMessage(`Start Time: ${appointment.start}`);
+                logMessage(`Location: ${appointment.location}`);
+                logMessage(`Description: ${appointment.description}`);
+              }
+
+              functionResponses.push({
+                id: call.id,
+                name: call.name,
+                response: {
+                  result: {
+                    object_value: appointment
+                  }
+                }
+              });
+            } catch (error) {
+              logMessage(`API Response: Error accessing calendar - ${error.message}`);
+              functionResponses.push({
+                id: call.id,
+                name: call.name,
+                response: {
+                  error: error.message
+                }
+              });
+            }
           }
         }
 
@@ -433,6 +495,47 @@
         }
       }
     };
+
+    // Add function to send text message
+    window.sendTextMessage = async function() {
+      const textInput = document.getElementById('textInput');
+      const text = textInput.value.trim();
+      if (!text) return;
+
+      // Clear input
+      textInput.value = '';
+
+      // Log user message
+      logMessage('You: ' + text);
+
+      try {
+        // Reinitialize Gemini API if WebSocket is closed
+        if (!geminiAPI || geminiAPI.ws.readyState !== WebSocket.OPEN) {
+          geminiAPI = new GeminiLiveAPI(endpoint, false);
+          setupGeminiHandlers();
+          await new Promise((resolve) => {
+            geminiAPI.onSetupComplete = () => {
+              resolve();
+              document.getElementById('micButton').disabled = false;
+            };
+            sendCustomSetup();
+          });
+        }
+
+        // Send text message
+        geminiAPI.sendTextMessage(text);
+      } catch (error) {
+        console.error('Error sending message:', error);
+        logMessage('Error sending message: ' + error.message);
+      }
+    };
+
+    // Add keypress handler for text input
+    document.getElementById('textInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendTextMessage();
+      }
+    });
   </script>
 </body>
 </html>

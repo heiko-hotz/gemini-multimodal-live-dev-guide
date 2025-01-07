@@ -14,45 +14,15 @@
  * limitations under the License.
  */
 
-const FINNHUB_API_KEY = '<YOUR_FINNHUB_API_KEY>';
-
 export async function getStockPrice(symbol) {
-  try {
-    const url = `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${FINNHUB_API_KEY}`;
-    console.log('Fetching stock data from:', url);
-    
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Finnhub API failed with status: ${response.status}`);
+    try {
+        const response = await fetch(`http://localhost:8000/stock/${encodeURIComponent(symbol)}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error accessing stock data:', error);
+        throw new Error(`Failed to get stock price: ${error.message}`);
     }
-    
-    const data = await response.json();
-    
-    // Check if we got valid data
-    if (data.c === 0 && data.h === 0 && data.l === 0) {
-      return {
-        error: `Could not find stock data for symbol: ${symbol}`
-      };
-    }
-
-    return {
-      currentPrice: data.c,
-      change: data.d,
-      percentChange: data.dp,
-      highPrice: data.h,
-      lowPrice: data.l,
-      openPrice: data.o,
-      previousClose: data.pc,
-      symbol: symbol.toUpperCase()
-    };
-  } catch (error) {
-    console.error('Detailed error:', {
-      message: error.message,
-      stack: error.stack,
-      type: error.name
-    });
-    return {
-      error: `Error fetching stock price for ${symbol}: ${error.message}`
-    };
-  }
 } 
