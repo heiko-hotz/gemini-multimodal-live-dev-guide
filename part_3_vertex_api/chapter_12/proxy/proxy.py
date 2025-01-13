@@ -19,7 +19,9 @@ import traceback
 import websockets
 import certifi
 import google.auth
+import requests
 from google.auth.transport.requests import Request
+from urllib.parse import quote
 from websockets.legacy.protocol import WebSocketCommonProtocol
 from websockets.legacy.server import WebSocketServerProtocol
 
@@ -27,6 +29,7 @@ from websockets.legacy.server import WebSocketServerProtocol
 print("DEBUG: proxy.py - Starting script...")  # Add print here
 
 
+#HOST = "us-central1-aiplatform.googleapis.com"
 HOST = "us-central1-aiplatform.googleapis.com"
 SERVICE_URL = f"wss://{HOST}/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent"
 
@@ -34,6 +37,94 @@ DEBUG = True
 
 # Track active connections
 active_connections = set()
+
+PROJECT_ID = "<YOUR_PROJECT_ID>"
+LOCATION = "us-central1"
+
+OPENWEATHER_API_KEY="<YOUR_OPENWEATHER_API_KEY>"
+
+async def fetch_url(url: str) -> requests.Response:
+    try:
+        response = requests.get(url)
+
+        # The request was successful (status code 200)
+        if response.status_code == 200:
+            return response.json()
+
+        print('Error:', response.status_code)
+        return None
+    except requests.exceptions.RequestException as e:
+        # Handle any network-related errors or exceptions
+        print('Error:', e)
+        return None
+
+
+async def get_weather(city: str) -> dict:
+    """
+    Get the current weather for the given city name.
+
+    Args:
+        city: the name of the city to search the weather for.
+
+    Returns:
+        dict: weather results.
+    """
+    print("city: ", city)
+
+    geo_url = f"https://api.openweathermap.org/geo/1.0/direct?q={quote(city)}&limit=1&appid={OPENWEATHER_API_KEY}"
+    geo_data = await fetch_url(geo_url)
+
+    if not geo_data:
+      print(f"Could not find location: {city}.")
+      return None
+
+    lat = geo_data[0]["lat"]
+    lon = geo_data[0]["lon"]
+
+    weather_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=metric&appid={OPENWEATHER_API_KEY}"
+    weather_data = await fetch_url(weather_url)
+    if not weather_data:
+      print(f"Could not find weather info for  {city}.")
+      return None
+
+    return {
+      "temperature": weather_data["main"]["temp"],
+      "description": weather_data["weather"][0]["description"],
+      "humidity": weather_data["main"]["humidity"],
+      "windSpeed": weather_data["wind"]["speed"],
+      "city": weather_data["name"],
+      "country": weather_data["sys"]["country"],
+    }
+
+
+def create_setup_message(system_instruction: str) -> dict:
+    message = {}
+    message["model"] = f"projects/{PROJECT_ID}/locations/{LOCATION}/publishers/google/models/gemini-2.0-flash-exp"
+    message["generation_config"] = {"response_modalities": ["audio"],
+                                    "speech_config": {
+                                        "voice_config": {
+                                            "prebuilt_voice_config": {
+                                                "voice_name": "Aoede"
+                                            }
+                                        }
+                                    }}
+    message["system_instruction"] = {"role": "user",
+                                     "parts": [{"text": system_instruction}]}
+    message["tools"] = [{"functionDeclarations": [{
+                            "name": "get_weather",
+                            "description": "Get current weather information for a city",
+                            "parameters": {
+                                "type": "OBJECT",
+                                "properties": {
+                                    "city": {
+                                        "type": "STRING",
+                                        "description": "The name of the city to get weather for"
+                                    }
+                                },
+                                "required": ["city"]
+                            }
+                        }]}]
+    return message
 
 
 async def get_access_token():
@@ -76,6 +167,24 @@ async def proxy_task(
                         f"{name} forwarding server content"
                         + (" with audio" if has_audio else "")
                     )
+                elif "toolCall" in data:
+                    print(f"Tool calling message: {json.dumps(data, indent=2)}")
+                    function_responses = []
+                    tool_call_response = {}
+                    for function_call in data["toolCall"]["functionCalls"]:
+                        if function_call["name"] == "get_weather":
+                            weather_results = await get_weather(function_call["args"]["city"])
+                            print(f"TOOL: get_weather output: {weather_results}")
+                            function_responses.append({"name": function_call["name"],
+                                                       "response": { "result" : { "object_value": weather_results}}})
+                        tool_call_response = {"city": function_call["args"]["city"], "weather": weather_results}
+                    await source_websocket.send(
+                        json.dumps({"tool_response": { "function_responses": function_responses }}))
+
+                    # Sends toolCallResponse purely for debugging purposes. No need to implement in the production system.
+                    await target_websocket.send(json.dumps({"toolCallResponse": tool_call_response}))
+                    # No need to forward the tool call message to clients.
+                    continue
                 else:
                     print(f"{name} forwarding message type: {list(data.keys())}")
                     print(f"Message content: {json.dumps(data, indent=2)}")
@@ -153,6 +262,26 @@ async def create_proxy(
         ) as server_websocket:
             print("Connected to Vertex AI")
             active_connections.add(server_websocket)
+
+            try:
+                f = open("system-instructions.txt", "r")
+                system_instructions = f.read()
+            except Exception as e:
+                print(f"Error reading system-instructions.txt.")
+                print(f"Error details: {str(e)}")
+                print("=" * 80)
+
+            setup_message = {"setup" : create_setup_message(system_instructions)}
+            print(f"Sending setup message:\n {setup_message}")
+            try:
+                await server_websocket.send(json.dumps(setup_message))
+            except Exception as e:
+                print(f"\nError sending set up message:")
+                print("=" * 80)
+                print(f"Error details: {str(e)}")
+                print("=" * 80)
+                print(f"Message that failed: {json.dumps(setup_message, indent=2)}")
+                raise
 
             # Create bidirectional proxy tasks
             client_to_server = asyncio.create_task(
