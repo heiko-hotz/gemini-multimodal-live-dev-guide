@@ -7,7 +7,7 @@ class GeminiLiveAPI {
     this.onTurnComplete = () => {};
     this.onError = () => {};
     this.onClose = () => {};
-    this.onToolCall = () => {};
+    this.onToolCallResponse = () => {};
     this.pendingSetupMessage = null;
     this.autoSetup = autoSetup;
     this.setupConfig = setupConfig;
@@ -41,8 +41,8 @@ class GeminiLiveAPI {
 
         if (wsResponse.setupComplete) {
           this.onSetupComplete();
-        } else if (wsResponse.toolCall) {
-          this.onToolCall(wsResponse.toolCall);
+        } else if (wsResponse.toolCallResponse) {
+          this.onToolCallResponse(wsResponse.toolCallResponse);
         } else if (wsResponse.serverContent) {
           if (wsResponse.serverContent.interrupted) {
             this.onInterrupted();

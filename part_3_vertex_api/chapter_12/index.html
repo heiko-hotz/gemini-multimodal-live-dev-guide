@@ -59,14 +59,10 @@
     import { AudioRecorder } from './shared/audio-recorder.js';
     import { AudioStreamer } from './shared/audio-streamer.js';
     import { MediaHandler } from './shared/media-handler.js';
-    import { getWeather } from './shared/weather-api.js';
-    //import { getStockPrice } from './shared/stock-api.js';
     import { statusHandler } from './status-handler.js';
 
     console.log('Script started, setting up WebSocket...');
     const PROXY_URL = `wss://${window.location.host}/ws`;  // Note: no port needed in Cloud Run
-    const PROJECT_ID = '<YOUR_PROJECT_ID>';
-    const LOCATION = 'us-central1';
 
     let audioContext;
     let audioStreamer;
@@ -79,36 +75,6 @@
     let systemInstructions = '';  // Store system instructions for reconnection
     let geminiAPI;  // Will be initialized after loading system instructions
 
-    const setupConfig = {
-      model: `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/gemini-2.0-flash-exp`,
-      tools: [{
-        functionDeclarations: [{
-          name: "get_weather",
-          description: "Get current weather information for a city",
-          parameters: {
-            type: "OBJECT",
-            properties: {
-              city: {
-                type: "STRING",
-                description: "The name of the city to get weather for"
-              }
-            },
-            required: ["city"]
-          }
-        }]
-      }],
-      generation_config: {
-        response_modalities: ["audio"],
-        speech_config: {
-          voice_config: {
-            prebuilt_voice_config: {
-              voice_name: "Aoede"
-            }
-          }
-        }
-      }
-    };
-
     document.addEventListener('DOMContentLoaded', () => {
       console.log('DOM loaded, initializing media handler');
       mediaHandler = new MediaHandler();
@@ -119,79 +85,10 @@
       }
       mediaHandler.initialize(videoElement);
 
-      // Load system instructions and send custom setup message
-      fetch('/shared/system-instructions.txt')
-        .then(response => response.text())
-        .then(instructions => {
-          systemInstructions = instructions;  // Store for later use
-          // Create initial API instance
-          geminiAPI = new GeminiLiveAPI(PROXY_URL, true, setupConfig);
-          setupGeminiHandlers();
-          sendCustomSetup(instructions);
-        });
+      // Create initial API instance.
+      geminiAPI = new GeminiLiveAPI(PROXY_URL, /*auto_setup=*/false, /*setupConfig=*/null);
+      setupGeminiHandlers();
     });
-
-    function sendCustomSetup(systemInstructions) {
-      const setupMessage = {
-        setup: {
-          model: "models/gemini-2.0-flash-exp",
-          system_instruction: {
-            role: "user",
-            parts: [{
-              text: systemInstructions
-            }]
-          },
-          tools: [{
-            functionDeclarations: [{
-              name: "get_weather",
-              description: "Get current weather information for a city",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  city: {
-                    type: "STRING",
-                    description: "The name of the city to get weather for"
-                  }
-                },
-                required: ["city"]
-              }
-            },
-            {
-              name: "get_stock_price",
-              description: "Get current stock price and related information for a given stock symbol",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  symbol: {
-                    type: "STRING",
-                    description: "The stock symbol to get price information for (e.g., AAPL, GOOGL)"
-                  }
-                },
-                required: ["symbol"]
-              }
-            }]
-          },
-          {
-            codeExecution: {}
-          },
-          {
-            googleSearch: {}
-          }],
-          generation_config: {
-            response_modalities: ["audio"],
-            speech_config: {
-              voice_config: {
-                prebuilt_voice_config: {
-                  voice_name: "Puck"
-                }
-              }
-            }
-          }
-        }
-      };
-      console.log('Sending setup message:', setupMessage);
-      geminiAPI.sendSetupMessage(setupMessage);
-    }
 
     async function ensureAudioInitialized() {
       if (!initialized) {
@@ -248,7 +145,6 @@
                 document.getElementById('screenButton').classList.remove('hidden');
               }
             };
-            sendCustomSetup(systemInstructions);
           });
         }
 
@@ -398,74 +294,14 @@
         }
         await playAudioChunk(audioData);
       };
-
-      geminiAPI.onToolCall = async (toolCall) => {
-        console.log('Received tool call:', toolCall);
-        const functionCalls = toolCall.functionCalls;
-        const functionResponses = [];
-
-        for (const call of functionCalls) {
-          if (call.name === 'get_weather') {
-            console.log('Executing weather function call for:', call.args.city);
-            // Update status before making the API call
-            statusHandler.update('get_weather', { 
-              city: call.args.city, 
-              status: 'requesting' 
-            });
-
-            const weather = await getWeather(call.args.city);
-            console.log('Weather response:', weather);
-            
-            // Update status with the weather results
-            statusHandler.update('get_weather', { 
-              city: call.args.city, 
-              status: 'received',
-              weather: weather 
-            });
-
-            functionResponses.push({
-              id: call.id,
-              name: call.name,
-              response: {
-                result: {
-                  object_value: weather
-                }
-              }
-            });
-          } /* else if (call.name === 'get_stock_price') {
-            console.log('Executing stock price function call for:', call.args.symbol);
-            // Update status before making the API call
-            statusHandler.update('get_stock_price', { 
-              symbol: call.args.symbol, 
-              status: 'requesting' 
-            });
-
-            const stockData = await getStockPrice(call.args.symbol);
-            console.log('Stock response:', stockData);
-            
-            // Update status with the stock results
-            statusHandler.update('get_stock_price', { 
-              symbol: call.args.symbol, 
-              status: 'received',
-              stock: stockData 
-            });
-
-            functionResponses.push({
-              id: call.id,
-              name: call.name,
-              response: {
-                result: {
-                  object_value: stockData
-                }
-              }
-            });
-          }
-        */
-        }
-
-        if (functionResponses.length > 0) {
-          geminiAPI.sendToolResponse(functionResponses);
-        }
+      
+      geminiAPI.onToolCallResponse = async (toolCallResponse) => {
+        console.log('Received tool call response:', toolCallResponse);
+        statusHandler.update('get_weather', { 
+          city: toolCallResponse.city, 
+          status: 'received',
+          weather: toolCallResponse.weather 
+        });
       };
 
       geminiAPI.onInterrupted = () => {
