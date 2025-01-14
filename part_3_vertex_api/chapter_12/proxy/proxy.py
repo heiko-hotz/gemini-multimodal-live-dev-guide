@@ -29,7 +29,6 @@ from websockets.legacy.server import WebSocketServerProtocol
 print("DEBUG: proxy.py - Starting script...")  # Add print here
 
 
-#HOST = "us-central1-aiplatform.googleapis.com"
 HOST = "us-central1-aiplatform.googleapis.com"
 SERVICE_URL = f"wss://{HOST}/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent"
 
